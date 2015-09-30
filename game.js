@@ -207,26 +207,7 @@ function windowControl(){
     ctx.canvas.height = window.innerHeight;
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 }
-
-function drawMessageOverlay(message)
-{
-    var overlayWidth = canvas.width*0.6;
-    var overlayHeight = canvas.height*0.4;
-    var overlayX = canvas.width/2-overlayWidth/2;
-    var overlayY = canvas.height/2-overlayHeight/2; 
-            
-    ctx.beginPath();
-    ctx.rect(overlayX,overlayY , overlayWidth, overlayHeight);
-    ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-    ctx.fill();        
-    ctx.closePath();
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "white";
-    var textSize = ctx.measureText(message);
-    ctx.fillText(message, canvas.width/2 - textSize.width/2 , overlayY + overlayHeight*0.5);   
-    console.log('filled text ' + message);
-}
-    
+   
 function drawScore() {
     ctx.font = "bold 20px Arial";
     ctx.fillStyle = "#151515";
@@ -237,8 +218,8 @@ function drawScore() {
 function eraseScore() {
     ctx.font = "bold 20px Arial";
     ctx.fillStyle = "#0095DD";
-    ctx.fillText("Player 1:   ", 30, 20);
-    ctx.fillText("Player 2:   ", canvas.width-120, 20);
+    ctx.fillText("Player 1:     ", 30, 20);
+    ctx.fillText("Player 2:     ", canvas.width-120, 20);
 }
 
 function resetScores() {
@@ -268,7 +249,7 @@ function incrementAndStoreScores(playerId) {
             scoreUpdated = 1;
         }       
     } else {
-        drawMessageOverlay("Sorry the browser does not support local storage");
+        swal("Sorry the browser does not support local storage");
     }
 }
 
@@ -305,7 +286,7 @@ function draw() {
             dx = -dx;
         } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {      
             incrementAndStoreScores(1);
-            //eraseScore(); 
+            eraseScore(); 
             drawScore();
             pauseGame(); 
             if (player1Score == gameOverScore) {      
@@ -315,7 +296,7 @@ function draw() {
             }
         } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {  
             incrementAndStoreScores(2);
-            //eraseScore();  
+            eraseScore();  
             drawScore(); 
             pauseGame();
             if (player2Score == gameOverScore) {      
@@ -350,12 +331,7 @@ function draw() {
 
 if(document.readyState === "complete") {
   document.window.onload = startGame();
-  console.log('test1');
 }
 else {
-  //Add onload or DOMContentLoaded event listeners here: for example,
   window.addEventListener("onload", startGame());
-  console.log('test2');
-  //or
-  //document.addEventListener("DOMContentLoaded", function () {/* code */}, false);
 }
