@@ -307,7 +307,7 @@ function draw() {
             //player1Score ++;            
             //alert("Player 1! Ready");
             incrementAndStoreScores(1);
-            eraseScore(); 
+            //eraseScore(); 
             drawScore();
             pauseGame();
             //drawMessageOverlay("Player 1 wins the round!");   
@@ -316,7 +316,7 @@ function draw() {
             //player2Score ++;
             //gameStatus = 1;
             incrementAndStoreScores(2);
-            eraseScore();  
+            //eraseScore();  
             drawScore(); 
             pauseGame();
             //drawMessageOverlay("Player 2 wins the round!");
