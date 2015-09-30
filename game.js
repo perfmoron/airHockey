@@ -21,6 +21,8 @@ var gameOverScore = 3;
 var scoreUpdated = 0;
 var paddleSound = document.getElementById('paddle');
 var intervalId;
+var player1Score = sessionStorage.getItem("player1Score");
+var player2Score = sessionStorage.getItem("player2Score");
 
 var snd = new Audio("sounds/smb_paddle.wav"); // buffers automatically when created
 
@@ -126,7 +128,8 @@ function finishGame(playerId){
         
     function(isConfirm){   
         if (isConfirm) {  
-            resetScores();    
+            resetScores();  
+            location.reload();  
             startGame();
         } else {     
             swal("Cancelled", "You have decided to cancel the game!", "info");   
@@ -245,8 +248,8 @@ function resetScores() {
 
 function incrementAndStoreScores(playerId) {
     
-    var player1Score = parseInt(sessionStorage.getItem("player1Score"));
-    var player2Score = parseInt(sessionStorage.getItem("player2Score"));
+    player1Score = parseInt(sessionStorage.getItem("player1Score"));
+    player2Score = parseInt(sessionStorage.getItem("player2Score"));
     console.log(player1Score);
     console.log(player2Score);
     
@@ -288,10 +291,7 @@ function playSound(soundName){
 */
 
 function draw() {
-
-    var player1Score = sessionStorage.getItem("player1Score");
-    var player2Score = sessionStorage.getItem("player2Score");
-    
+   
     windowControl();
     var paddleX2 = canvas.width-paddle2Width;
     drawBall();
@@ -299,33 +299,31 @@ function draw() {
     drawPaddle2(paddleX2,paddleY2,paddle2Width,paddle2Height);
     drawScore();
     
-    if(x + dx > canvas.width-ballRadius-paddle2Width || x + dx < ballRadius+paddle1Width){
+     if(x + dx > canvas.width-ballRadius-paddle2Width || x + dx < ballRadius+paddle1Width){
         if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){       
             snd.play();
             dx = -dx;
-        } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {
-            //player1Score ++;            
-            //alert("Player 1! Ready");
+        } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {      
             incrementAndStoreScores(1);
             //eraseScore(); 
             drawScore();
-            pauseGame();
-            //drawMessageOverlay("Player 1 wins the round!");   
-            finishRound("Player 1");
-        } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {
-            //player2Score ++;
-            //gameStatus = 1;
+            pauseGame(); 
+            if (player1Score == gameOverScore) {      
+                finishGame("Player 1");
+            } else {
+                finishRound("Player 1");
+            }
+        } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {  
             incrementAndStoreScores(2);
             //eraseScore();  
             drawScore(); 
             pauseGame();
-            //drawMessageOverlay("Player 2 wins the round!");
-            finishRound("Player 2"); 
-        } else if (player1Score == gameOverScore) {      
-            finishGame("Player 1")
-        } else if (player2Score == gameOverScore) {      
-            finishGame("Player 2")
-        }
+            if (player2Score == gameOverScore) {      
+                finishGame("Player 2");
+            } else {
+                finishRound("Player 2");
+            }
+        }         
     }
 
     if(y + dy < ballRadius || y + dy > canvas.height-ballRadius){
