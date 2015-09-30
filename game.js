@@ -20,7 +20,6 @@ var paddleY2 = (canvas.height - paddle2Height)/2;
 var gameOverScore = 3;
 var scoreUpdated = 0;
 var paddleSound = document.getElementById('paddle');
-console.log(paddleSound);
 
 var snd = new Audio("sounds/smb_paddle.wav"); // buffers automatically when created
 
@@ -300,7 +299,7 @@ function draw() {
             finishRound("Player 2"); 
         } else if (player1Score == gameOverScore) {      
             finishGame("Player 1")
-        }   else if (player2Score == gameOverScore) {      
+        } else if (player2Score == gameOverScore) {      
             finishGame("Player 2")
         }
     }
