@@ -81,11 +81,19 @@ function startGame(){
         
     function(isConfirm){   
         if (isConfirm) {     
-            setInterval(draw, 5); 
+             var intervalId = setInterval(draw, 5); 
         } else {     
              swal("Cancelled", "You have decided to cancel the game!", "info");   
         } 
-    });   
+    });  
+}
+
+function pauseGame(){
+   window.clearInterval(intervalId);
+}
+
+function resumeGame(){
+   window.setInterval(intervalId);
 }
 
 function finishGame(playerId){
@@ -108,6 +116,26 @@ function finishGame(playerId){
             swal("Cancelled", "You have decided to cancel the game!", "info");   
         } 
     });
+}
+
+function finishRound(playerId) {
+    swal({   
+        title: playerId+" wins!",   
+        text: "Click the start button to start the game",   
+        confirmButtonColor: "#04B4AE",   
+        confirmButtonText: "Start game",    
+        closeOnConfirm: true,   
+        closeOnCancel: false 
+        }, 
+        
+    function(isConfirm){   
+        if (isConfirm) {   
+            startGame();
+             var intervalId = setInterval(draw, 5); 
+        } else {     
+          swal("Cancelled", "You have decided to cancel the game!", "info"); 
+        } 
+    }); 
 }
 
 /**
@@ -179,27 +207,6 @@ function drawMessageOverlay(message)
     var textSize = ctx.measureText(message);
     ctx.fillText(message, canvas.width/2 - textSize.width/2 , overlayY + overlayHeight*0.5);   
     console.log('filled text ' + message);
-}
-
-function finishRound(playerId){ 
-   
-    swal({   
-        title: playerId+" wins!",   
-        text: "Click the start button to start the game",   
-        confirmButtonColor: "#04B4AE",   
-        confirmButtonText: "Start game",    
-        closeOnConfirm: true,   
-        closeOnCancel: false 
-        }, 
-        
-    function(isConfirm){   
-        if (isConfirm) {   
-            startGame();
-            setInterval(draw, 5); 
-        } else {     
-          swal("Cancelled", "You have decided to cancel the game!", "info"); 
-        } 
-    }); 
 }
     
 function drawScore() {
@@ -287,14 +294,16 @@ function draw() {
             incrementAndStoreScores(1);
             eraseScore(); 
             drawScore();
+            pauseGame()
             //drawMessageOverlay("Player 1 wins the round!");   
-            finishRound("Player 1");  
+            finishRound("Player 1");
         } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {
             //player2Score ++;
             //gameStatus = 1;
             incrementAndStoreScores(2);
             eraseScore();  
             drawScore(); 
+            pauseGame()
             //drawMessageOverlay("Player 2 wins the round!");
             finishRound("Player 2"); 
         } else if (player1Score == gameOverScore) {      
@@ -326,4 +335,14 @@ function draw() {
     y += dy;
 }
 
-document.window.onload = startGame();
+if(document.readyState === "complete") {
+  document.window.onload = startGame();
+  console.log('test1');
+}
+else {
+  //Add onload or DOMContentLoaded event listeners here: for example,
+  window.addEventListener("onload", startGame());
+  console.log('test2');
+  //or
+  //document.addEventListener("DOMContentLoaded", function () {/* code */}, false);
+}
