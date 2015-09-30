@@ -94,14 +94,28 @@ function pauseGame(){
 }
 
 function resumeGame(){
+    
+    x = canvas.width/2;
+    y = canvas.height-30;
    window.setInterval(intervalId);
+}
+
+function reStartGame(){
+    
+    x = canvas.width/2;
+    y = canvas.height-30;
+    dx = -2;
+    dy = 2;
+      
+    intervalId = setInterval(draw, 5); 
+   
 }
 
 function finishGame(playerId){
     
     swal({   
         title: "GAME OVER!",   
-        text: playerId+" wins! Press restart to start another game",
+        text: playerId+" wins! Press restart to start a new game",
         //type: "info",  
         confirmButtonColor: "#04B4AE",   
         confirmButtonText: "Re-start game",    
@@ -122,17 +136,17 @@ function finishGame(playerId){
 function finishRound(playerId) {
     swal({   
         title: playerId+" wins!",   
-        text: "Click the start button to start the game",   
+        text: "Click the resume button to resume the game",   
         confirmButtonColor: "#04B4AE",   
-        confirmButtonText: "Start game",    
+        confirmButtonText: "Resume game",    
         closeOnConfirm: true,   
         closeOnCancel: false 
         }, 
         
     function(isConfirm){   
         if (isConfirm) {   
-            startGame();
-             intervalId = setInterval(draw, 5); 
+            reStartGame();
+            //intervalId = setInterval(draw, 5); 
         } else {     
           swal("Cancelled", "You have decided to cancel the game!", "info"); 
         } 
@@ -295,7 +309,7 @@ function draw() {
             incrementAndStoreScores(1);
             eraseScore(); 
             drawScore();
-            pauseGame()
+            pauseGame();
             //drawMessageOverlay("Player 1 wins the round!");   
             finishRound("Player 1");
         } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {
@@ -304,7 +318,7 @@ function draw() {
             incrementAndStoreScores(2);
             eraseScore();  
             drawScore(); 
-            pauseGame()
+            pauseGame();
             //drawMessageOverlay("Player 2 wins the round!");
             finishRound("Player 2"); 
         } else if (player1Score == gameOverScore) {      
