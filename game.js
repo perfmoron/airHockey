@@ -20,6 +20,7 @@ var paddleY2 = (canvas.height - paddle2Height)/2;
 var gameOverScore = 3;
 var scoreUpdated = 0;
 var paddleSound = document.getElementById('paddle');
+var intervalId;
 
 var snd = new Audio("sounds/smb_paddle.wav"); // buffers automatically when created
 
@@ -81,7 +82,7 @@ function startGame(){
         
     function(isConfirm){   
         if (isConfirm) {     
-             var intervalId = setInterval(draw, 5); 
+             intervalId = setInterval(draw, 5); 
         } else {     
              swal("Cancelled", "You have decided to cancel the game!", "info");   
         } 
@@ -131,7 +132,7 @@ function finishRound(playerId) {
     function(isConfirm){   
         if (isConfirm) {   
             startGame();
-             var intervalId = setInterval(draw, 5); 
+             intervalId = setInterval(draw, 5); 
         } else {     
           swal("Cancelled", "You have decided to cancel the game!", "info"); 
         } 
