@@ -113,6 +113,7 @@ function reStartGame(){
 
 function finishGame(playerId){
     
+    pauseGame();    
     swal({   
         title: "GAME OVER!",   
         text: playerId+" wins! Press restart to start a new game",
@@ -126,7 +127,7 @@ function finishGame(playerId){
     function(isConfirm){   
         if (isConfirm) {  
             resetScores();    
-            setInterval(draw, 5); 
+            startGame();
         } else {     
             swal("Cancelled", "You have decided to cancel the game!", "info");   
         } 
@@ -146,7 +147,6 @@ function finishRound(playerId) {
     function(isConfirm){   
         if (isConfirm) {   
             reStartGame();
-            //intervalId = setInterval(draw, 5); 
         } else {     
           swal("Cancelled", "You have decided to cancel the game!", "info"); 
         } 
