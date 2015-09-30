@@ -66,6 +66,10 @@ function keyUpHandler(e) {
 
 function startGame(){
     
+    //Initialise scores
+    sessionStorage.setItem("player1Score", "0");
+    sessionStorage.setItem("player2Score", "0");   
+    
     swal({   
         title: "Welcome to internet Air hockey!",   
         text: "Click Start to start a game",   
@@ -98,7 +102,8 @@ function finishGame(playerId){
         }, 
         
     function(isConfirm){   
-        if (isConfirm) {     
+        if (isConfirm) {  
+            resetScores();    
             setInterval(draw, 5); 
         } else {     
             swal("Cancelled", "You have decided to cancel the game!", "info");   
@@ -182,7 +187,6 @@ function finishRound(playerId){
     swal({   
         title: playerId+" wins!",   
         text: "Click the start button to start the game",   
-        //type: "info",  
         confirmButtonColor: "#04B4AE",   
         confirmButtonText: "Start game",    
         closeOnConfirm: true,   
@@ -217,24 +221,6 @@ function resetScores() {
     sessionStorage.setItem("player1Score", "0");
     sessionStorage.setItem("player2Score", "0"); 
 }
-
-/*   
-function updateScore(playerId) {
-    ctx.font = "18px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText("Player 1: "+sessionStorage .getItem("player1Score"), 30, 20);
-    ctx.fillText("Player 2: "+sessionStorage .getItem("player2Score"), canvas.width-100, 20);  
-    if (playerId == 1) { 
-        incrementAndStoreScores(1);
-        ctx.fillText("Player 1: "+sessionStorage .getItem("player1Score"), 30, 20); 
-        console.log("****"+sessionStorage .getItem("player1Score")+"****");  
-    } else if(playerId == 2) {        
-        incrementAndStoreScores(2);
-        ctx.fillText("Player 2: "+sessionStorage .getItem("player2Score"), canvas.width-100, 20);
-        console.log("****"+sessionStorage .getItem("player2Score")+"****"); 
-    }        
-}
-*/
 
 function incrementAndStoreScores(playerId) {
     
@@ -281,8 +267,7 @@ function playSound(soundName){
 */
 
 function draw() {
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     var player1Score = sessionStorage.getItem("player1Score");
     var player2Score = sessionStorage.getItem("player2Score");
     
@@ -294,8 +279,7 @@ function draw() {
     drawScore();
     
     if(x + dx > canvas.width-ballRadius-paddle2Width || x + dx < ballRadius+paddle1Width){
-        if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){
-            
+        if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){       
             snd.play();
             dx = -dx;
         } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {
@@ -314,15 +298,11 @@ function draw() {
             drawScore(); 
             //drawMessageOverlay("Player 2 wins the round!");
             finishRound("Player 2"); 
-        } else if (player1Score == gameOverScore || player2Score == gameOverScore){
-            //gameStatus=1;
-            //drawMessageOverlay("GAME OVER");
-            finishGame(playerId)
-            //sleep(5000);
-            resetScores();
-        }        
-        //drawMessageOverlay("RELOAD TO CONTINUE");      
-        //document.location.reload();
+        } else if (player1Score == gameOverScore) {      
+            finishGame("Player 1")
+        }   else if (player2Score == gameOverScore) {      
+            finishGame("Player 2")
+        }
     }
 
     if(y + dy < ballRadius || y + dy > canvas.height-ballRadius){
