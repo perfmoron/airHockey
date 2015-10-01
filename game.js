@@ -24,7 +24,9 @@ var intervalId;
 var player1Score = sessionStorage.getItem("player1Score");
 var player2Score = sessionStorage.getItem("player2Score");
 
-var snd = new Audio("sounds/smb_paddle.wav"); // buffers automatically when created
+var paddleSnd = new Audio("sounds/smb_paddle.wav");
+var gameOverSnd = new Audio("sounds/smb_gameover.wav");
+var roundOverSnd = new Audio("sounds/smb_mariodie.wav");
 
 
 // Initialise scores for the players
@@ -84,7 +86,7 @@ function startGame(){
         
     function(isConfirm){   
         if (isConfirm) {     
-             intervalId = setInterval(draw, 5); 
+             intervalId = setInterval(draw, 1); 
         } else {     
              swal("Cancelled", "You have decided to cancel the game!", "info");   
         } 
@@ -109,12 +111,13 @@ function reStartGame(){
     dx = -2;
     dy = 2;
       
-    intervalId = setInterval(draw, 5); 
+    intervalId = setInterval(draw, 1); 
    
 }
 
 function finishGame(playerId){
     
+    gameOverSnd.play();
     pauseGame();    
     swal({   
         title: "GAME OVER!",   
@@ -138,6 +141,7 @@ function finishGame(playerId){
 }
 
 function finishRound(playerId) {
+    
     swal({   
         title: playerId+" wins!",   
         text: "Click the resume button to resume the game",   
@@ -285,9 +289,10 @@ function draw() {
     
      if(x + dx > canvas.width-ballRadius-paddle2Width || x + dx < ballRadius+paddle1Width){
         if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){       
-            snd.play();
+            paddleSnd.play();
             dx = -dx;
-        } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {      
+        } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {   
+            roundOverSnd.play();   
             incrementAndStoreScores(1);
             eraseScore(); 
             drawScore();
@@ -298,6 +303,7 @@ function draw() {
                 finishRound("Player 1");
             }
         } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {  
+            roundOverSnd.play();
             incrementAndStoreScores(2);
             eraseScore();  
             drawScore(); 
