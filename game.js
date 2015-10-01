@@ -130,6 +130,7 @@ function reStartGame(){
 
 function quitGame(){
     
+    pauseGame();
     swal({   
         title: "Do you want to quit the game?",   
         text: "Game scores would be lost!",  
