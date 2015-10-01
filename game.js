@@ -128,6 +128,35 @@ function reStartGame(){
     intervalId = setInterval(draw, 1);  
 }
 
+function quitGame(){
+    
+    swal({   
+        title: "Do you want to quit the game?",   
+        text: "Game scores would be lost!",  
+        type: "error",  
+        confirmButtonColor: "#04B4AE",   
+        confirmButtonText: "Quit",    
+        closeOnConfirm: true,   
+        closeOnCancel: false 
+        }, 
+        
+    function(isConfirm){   
+        if (isConfirm) { 
+            if(player1Score > player2Score)  {
+                finishGame("Player 1");
+            } else if (player1Score == player2Score) {
+                finishGame("Nobody");
+            } else {
+                finishGame("Player 2");
+            }         
+        } else {     
+          swal("Cancelled", "You have decided to cancel the game!", "info"); 
+        } 
+    }); 
+    
+}
+
+
 function finishGame(playerId){
     
     gameOverSnd.play();
