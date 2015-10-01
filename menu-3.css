@@ -4,8 +4,9 @@
 {
     /*You can decorate the menu's container, such as adding background images through this block*/
     background-color: #003366;
-    height: 38px;
-    padding: 15px;
+    height: 30px;
+    padding: 10px;
+    width: 220px;
     border-radius: 6px;
     box-sizing: content-box;
 }
