@@ -33,6 +33,22 @@ var roundOverSnd = new Audio("sounds/smb_mariodie.wav");
 //sessionStorage.setItem("player1Score", 0);
 //sessionStorage.setItem("player2Score", 0);
 
+/*
+var xmlString = "<div id='sse2'> \
+                    <div id='sses2'> \
+                    <ul>\
+                    <li><a href='?menu=2&skin=3&p=Javascript-Menus'>Pause</a></li> \
+                    <li><a href='?menu=2&skin=3&p=Horizontal-Menus'>Play</a></li> \
+                    <li><a href='?menu=2&skin=3&p=Web-Menus'>Stop</a></li> \
+                    </ul> \
+                    </div> \
+                 </div>"
+  , parser = new DOMParser()
+  , doc = parser.parseFromString(xmlString, "text/xml");
+doc.firstChild // => <div id="foo">...
+doc.firstChild.firstChild // => <a href="#">...
+*/
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false); 
     
@@ -115,6 +131,9 @@ function reStartGame(){
    
 }
 
+
+
+
 function finishGame(playerId){
     
     gameOverSnd.play();
@@ -142,6 +161,7 @@ function finishGame(playerId){
 
 function finishRound(playerId) {
     
+    roundOverSnd.play();
     swal({   
         title: playerId+" wins!",   
         text: "Click the resume button to resume the game",   
@@ -292,7 +312,7 @@ function draw() {
             paddleSnd.play();
             dx = -dx;
         } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {   
-            roundOverSnd.play();   
+            //roundOverSnd.play();   
             incrementAndStoreScores(1);
             eraseScore(); 
             drawScore();
@@ -303,7 +323,7 @@ function draw() {
                 finishRound("Player 1");
             }
         } else if ( x + dx < ballRadius && player2Score < gameOverScore ) {  
-            roundOverSnd.play();
+            
             incrementAndStoreScores(2);
             eraseScore();  
             drawScore(); 

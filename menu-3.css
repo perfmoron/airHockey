@@ -4,13 +4,13 @@
 {
     /*You can decorate the menu's container, such as adding background images through this block*/
     background-color: #003366;
-    height: 30px;
-    padding: 10px;
+    height: 20px;
+    padding: 5px;
     width: 220px;
     border-radius: 6px;
     box-sizing: content-box;
     position:absolute;
-    left: 43%;
+    left: 40%;
     top:0;
 }
 #sses2
@@ -36,7 +36,7 @@
     border:solid 1px #004E9B;
     background-color:#003D79;
     top:0px;
-    height:30px;
+    height:20px;
     border-radius: 8px;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
