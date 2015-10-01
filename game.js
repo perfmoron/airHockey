@@ -27,6 +27,7 @@ var player2Score = sessionStorage.getItem("player2Score");
 var paddleSnd = new Audio("sounds/smb_paddle.wav");
 var gameOverSnd = new Audio("sounds/smb_gameover.wav");
 var roundOverSnd = new Audio("sounds/smb_mariodie.wav");
+var roundPowSnd = new Audio("sounds/smb_powerup.wav");
 
 
 // Initialise scores for the players
@@ -114,9 +115,6 @@ function pauseGame(){
 }
 
 function resumeGame(){
-    
-    x = canvas.width/2;
-    y = canvas.height-30;
    window.setInterval(intervalId);
 }
 
@@ -127,12 +125,8 @@ function reStartGame(){
     dx = -2;
     dy = 2;
       
-    intervalId = setInterval(draw, 1); 
-   
+    intervalId = setInterval(draw, 1);  
 }
-
-
-
 
 function finishGame(playerId){
     
@@ -180,11 +174,10 @@ function finishRound(playerId) {
     }); 
 }
 
-/**
-function enterName(Player){
+function enterName(playerId){
     swal({ 
-        title: "Enter player name!", 
-        text: Player, 
+        title: "Enter name!"+ playerId, 
+        text: playerId, 
         type: "input", showCancelButton: true, 
         closeOnConfirm: false, 
         animation: "slide-from-top", 
@@ -200,7 +193,6 @@ function enterName(Player){
     swal("Nice!", "You wrote: " + inputValue, "success"); 
     });
 }
-*/
 
 function drawBall() {
     ctx.beginPath();
@@ -218,10 +210,26 @@ function drawPaddle1(xAxis1,yAxis1,p1Width, p1Height) {
     ctx.closePath();
 }
 
+function drawPaddle1PowUp(xAxis1,yAxis1,p1Width, p1Height) {
+    ctx.beginPath();
+    ctx.rect(xAxis1, yAxis1, p1Width, p1Height);
+    ctx.fillStyle = "#8A2300";
+    ctx.fill();
+    ctx.closePath();
+}
+
 function drawPaddle2(xAxis2,yAxis2,p2Width, p2Height) {           
     ctx.beginPath();
     ctx.rect(xAxis2, yAxis2, p2Width, p2Height);
     ctx.fillStyle = "#006600";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawPaddle2PowUp(xAxis2,yAxis2,p2Width, p2Height) {           
+    ctx.beginPath();
+    ctx.rect(xAxis2, yAxis2, p2Width, p2Height);
+    ctx.fillStyle = "#002000";
     ctx.fill();
     ctx.closePath();
 }
@@ -242,7 +250,6 @@ function drawScore() {
 function eraseScore() {
     //ctx.font = "bold 20px Arial";
     ctx.fillStyle = "#00BFFF";
-    console.log('test erase');
     ctx.fillRect(30, 0, 150, 30);
     ctx.fillRect(canvas.width-150, 0, 150, 30);
     //ctx.fillText("Player 1: "+sessionStorage.getItem("player1Score"), 30, 20);
@@ -303,14 +310,25 @@ function draw() {
     windowControl();
     var paddleX2 = canvas.width-paddle2Width;
     drawBall();
-    drawPaddle1(paddleX1,paddleY1,paddle1Width,paddle1Height);
-    drawPaddle2(paddleX2,paddleY2,paddle2Width,paddle2Height);
+    drawPaddle1(paddleX1,paddleY1+paddle1Height/5,paddle1Width,paddle1Height*4/5);
+    drawPaddle2PowUp(paddleX1,paddleY1,paddle1Width,paddle1Height/5);
+    drawPaddle2PowUp(paddleX1,paddleY1+paddle1Height*4/5,paddle1Width,paddle1Height/5);
+    drawPaddle2(paddleX2,paddleY2+paddle1Height/5,paddle2Width,paddle2Height*4/5);
+    drawPaddle2PowUp(paddleX2,paddleY2,paddle2Width,paddle2Height/5);
+    drawPaddle2PowUp(paddleX2,paddleY2+paddle2Height*4/5,paddle2Width,paddle2Height/5);
     drawScore();
     
      if(x + dx > canvas.width-ballRadius-paddle2Width || x + dx < ballRadius+paddle1Width){
-        if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){       
-            paddleSnd.play();
-            dx = -dx;
+        if( (y > paddleY1 && y < paddleY1 + paddle1Height)||(y > paddleY2 && y < paddleY2 + paddle2Height)){   
+            if ( (y < (paddleY1+(paddle1Height/5))) || (y > ((paddleY1+(4*paddle1Height)/5))) || (y < (paddleY2+(paddle2Height/5)))  || (y > ((paddleY1+(4*paddle2Height)/5)))) {
+                roundPowSnd.play();
+                dx = -2*dx; 
+                console.log('first');   
+            } else {
+                paddleSnd.play();
+                dx = -dx/2;
+                console.log('second');   
+            }  
         } else if ( x + dx > canvas.width-ballRadius && player1Score < gameOverScore ) {   
             //roundOverSnd.play();   
             incrementAndStoreScores(1);
@@ -341,17 +359,17 @@ function draw() {
     }
     
     if(player1UpPressed && paddleY1 < canvas.height-paddle1Height) {
-        paddleY1 += 7;
+        paddleY1 += 5;
     }
     else if(player1DownPressed && paddleY1 > 0) {
-        paddleY1 -= 7;
+        paddleY1 -= 5;
     }
     
     if(player2UpPressed && paddleY2 < canvas.height-paddle2Height) {
-        paddleY2 += 7;
+        paddleY2 += 5;
     }
     else if(player2DownPressed && paddleY2 > 0) {
-        paddleY2 -= 7;
+        paddleY2 -= 5;
     }
     
     x += dx;
