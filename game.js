@@ -212,14 +212,17 @@ function drawScore() {
     ctx.font = "bold 20px Arial";
     ctx.fillStyle = "#151515";
     ctx.fillText("Player 1: "+sessionStorage.getItem("player1Score"), 30, 20);
-    ctx.fillText("Player 2: "+sessionStorage.getItem("player2Score"), canvas.width-120, 20);
+    ctx.fillText("Player 2: "+sessionStorage.getItem("player2Score"), canvas.width-150, 20);
 }
 
 function eraseScore() {
-    ctx.font = "bold 20px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText("Player 1:     ", 30, 20);
-    ctx.fillText("Player 2:     ", canvas.width-120, 20);
+    //ctx.font = "bold 20px Arial";
+    ctx.fillStyle = "#00BFFF";
+    console.log('test erase');
+    ctx.fillRect(30, 0, 150, 30);
+    ctx.fillRect(canvas.width-150, 0, 150, 30);
+    //ctx.fillText("Player 1: "+sessionStorage.getItem("player1Score"), 30, 20);
+    //ctx.fillText("Player 2: "+sessionStorage.getItem("player2Score"), canvas.width-120, 20);
 }
 
 function resetScores() {
