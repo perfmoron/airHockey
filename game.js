@@ -60,10 +60,10 @@ function keyDownHandler(e) {
     else if(e.keyCode == 83) {
         player1DownPressed = true;
     } 
-    else if(e.keyCode == 101) {
+    else if(e.keyCode == 75) {
         player2UpPressed = true;
     } 
-    else if(e.keyCode == 102) {
+    else if(e.keyCode == 76) {
         player2DownPressed = true;
     }
 }
@@ -75,10 +75,10 @@ function keyUpHandler(e) {
     else if(e.keyCode == 83) {
         player1DownPressed = false;
     }
-    else if(e.keyCode == 101) {
+    else if(e.keyCode == 75) {
         player2UpPressed = false;
     }
-    else if(e.keyCode == 102) {
+    else if(e.keyCode == 76) {
         player2DownPressed = false;
     }
 }
