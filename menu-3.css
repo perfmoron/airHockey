@@ -10,8 +10,14 @@
     border-radius: 6px;
     box-sizing: content-box;
     position:absolute;
-    left: 40%;
-    top:0;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 100;
+    left: 0;
 }
 #sses2
 {
@@ -22,7 +28,8 @@
     position: relative;
     list-style-type: none;
     float:left;
-    padding:0;margin:0;
+    padding:0;
+    margin:0;
 }
 #sses2 li
 {
@@ -35,7 +42,7 @@
 {
     border:solid 1px #004E9B;
     background-color:#003D79;
-    top:0px;
+    top:5px;
     height:20px;
     border-radius: 8px;
     -moz-border-radius: 8px;
